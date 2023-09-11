@@ -1,0 +1,43 @@
+# trigger:
+# - master
+
+# pr:
+# - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- checkout: self  # This step checks out your repository
+
+- script: echo Install Node.js
+  displayName: 'Install Node.js'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: '14.x'
+  displayName: 'Use Node.js'
+
+- script: cd my-app && npm install
+  displayName: 'Install Node.js dependencies'
+
+- script: |
+    cd my-app  # Navigate to the my-app folder using the correct path
+    npm run build
+  displayName: 'Build React app'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)/my-app/build'  # Update the path to your build output
+    Contents: '**'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy build to artifact staging directory'
+
+
+
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'react-app'
+    publishLocation: 'Container'
