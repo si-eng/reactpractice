@@ -15,6 +15,6 @@ steps:
   - task: AzureContainerApps@1
     displayName: Build and deploy Container App
     inputs:
-      connectedServiceNameARM: 'pipi'
+      connectedServiceNameARM: 'pipe'
       appSourcePath: '$(System.DefaultWorkingDirectory)'
       acrName: 'sakshi1233'
